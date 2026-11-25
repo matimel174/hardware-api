@@ -1,0 +1,19 @@
+{
+  "name": "hardware-api",
+  "version": "1.0.0",
+  "description": "API REST para gestionar el catalogo de una tienda de hardware",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js"
+  },
+  "keywords": [],
+  "author": "Matias Melgarejo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.3.0",
+    "firebase": "^13.4.0",
+    "jsonwebtoken": "^9.0.3"
+  }
+}
