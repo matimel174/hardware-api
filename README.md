@@ -1,44 +1,49 @@
 # HardStore API
 
-API REST para gestionar el catalogo de productos de una tienda de hardware.
+API REST para administrar el catalogo de productos de una tienda de hardware. Los datos se guardan en Firestore y las rutas de escritura estan protegidas con JWT.
 
 ## Tecnologias
 - Node.js con ES Modules
-- Express para el servidor y el ruteo
-- Firebase Firestore como base de datos en la nube
-- JSON Web Tokens (jsonwebtoken) para proteger las rutas de escritura
+- Express, cors y body-parser
+- Firebase Firestore
+- jsonwebtoken (JWT)
+- dotenv para las variables de entorno
 
 ## Instalacion
     npm install
-    npm start
+    npm run start
 
-El servidor corre en http://localhost:3000.
+El servidor corre en http://localhost:3000. La configuracion esta en el archivo .env.
 
-## Estructura
-- routes/: define las rutas y que controlador atiende cada una
-- controllers/: recibe la solicitud, valida y arma la respuesta
-- services/: acceso a Firestore
-- middlewares/: verificacion del token
-- utils/: generacion y verificacion de tokens
-
-Se separo en capas para que cada archivo tenga una sola responsabilidad.
+## Arquitectura
+- index.js: configuracion del servidor y middlewares globales
+- src/routes: definicion de rutas
+- src/controllers: validan la peticion y arman la respuesta
+- src/services: logica de la aplicacion
+- src/models: acceso a Firestore
+- src/middlewares: autenticacion con JWT
+- src/config: conexion a Firebase
+- src/utils: generacion y verificacion de tokens
 
 ## Endpoints
 
 | Metodo | Ruta | Auth | Descripcion |
 |--------|------|------|-------------|
-| POST | /auth/login | No | Devuelve un token JWT |
-| GET | /api/products | No | Lista productos (filtro opcional ?category=) |
+| POST | /auth/login | No | Devuelve el Bearer token |
+| GET | /api/products | No | Lista todos los productos |
 | GET | /api/products/:id | No | Devuelve un producto |
-| POST | /api/products | Si | Crea un producto |
-| PUT | /api/products/:id | Si | Actualiza un producto |
+| POST | /api/products/create | Si | Crea un producto |
 | DELETE | /api/products/:id | Si | Elimina un producto |
 
 Las rutas protegidas requieren el header `Authorization: Bearer <token>`.
 
-## Credenciales de prueba
+## Usuario de prueba
 - Email: admin@gmail.com
 - Password: 123456
 
-## Codigos de respuesta
-200 OK, 201 creado, 400 datos invalidos, 401 sin token o credenciales invalidas, 404 no encontrado, 500 error del servidor.
+## Manejo de errores
+- 400: datos invalidos o JSON mal formado
+- 401: falta el token o credenciales incorrectas
+- 403: token invalido o vencido
+- 404: ruta o producto inexistente
+- 500: error del servidor o de Firestore
