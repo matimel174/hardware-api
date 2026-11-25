@@ -11,6 +11,6 @@ export function authenticate(req, res, next) {
     req.user = verifyToken(header.split(' ')[1]);
     next();
   } catch {
-    res.status(401).json({ error: 'Token invalido o vencido' });
+    res.status(403).json({ error: 'Token invalido o vencido' });
   }
 }

@@ -12,8 +12,7 @@ function validarProducto({ title, price, category, stock }) {
 
 export async function getProducts(req, res) {
   try {
-    const { category } = req.query;
-    const products = await productsService.getAll(category);
+    const products = await productsService.getAll();
     res.json(products);
   } catch (error) {
     console.error(error);
@@ -42,32 +41,11 @@ export async function createProduct(req, res) {
   }
 
   try {
-    const { title, price, category, stock = 0 } = body;
-    const nuevo = await productsService.create({ title, price, category, stock });
+    const nuevo = await productsService.create(body);
     res.status(201).json(nuevo);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al crear el producto' });
-  }
-}
-
-export async function updateProduct(req, res) {
-  const body = req.body ?? {};
-  const errorValidacion = validarProducto(body);
-  if (errorValidacion) {
-    return res.status(400).json({ error: errorValidacion });
-  }
-
-  try {
-    const { title, price, category, stock = 0 } = body;
-    const actualizado = await productsService.update(req.params.id, { title, price, category, stock });
-    if (!actualizado) {
-      return res.status(404).json({ error: 'Producto no encontrado' });
-    }
-    res.json(actualizado);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error al actualizar el producto' });
   }
 }
 
